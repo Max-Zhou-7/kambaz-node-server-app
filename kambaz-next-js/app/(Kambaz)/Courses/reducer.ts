@@ -1,0 +1,35 @@
+import { createSlice } from "@reduxjs/toolkit";
+import { courses } from "../Database";
+import { v4 as uuidv4 } from "uuid";
+import { enrollCourse } from "../Dashboard/reducer";
+const initialState = {
+ courses: courses,
+};
+const coursesSlice = createSlice({
+ name: "courses",
+ initialState,
+ reducers: {
+   addNewCourse: (state, { payload: course }) => {
+     const newCourse = { ...course, _id: uuidv4() };
+     state.courses = [...state.courses, newCourse] ;
+   },
+   deleteCourse: (state, { payload: courseId }) => {
+     state.courses = state.courses.filter(
+       (course: any) => course._id !== courseId
+     );
+   },
+   updateCourse: (state, { payload: course }) => {
+     state.courses = state.courses.map((c: any ) =>
+       c._id === course._id ? course : c
+     );
+   },
+
+   setCourses : (state, {payload: course} ) => {
+    state.courses = courses;
+   },
+
+}
+});
+export const { addNewCourse, deleteCourse, updateCourse, setCourses } =
+ coursesSlice.actions;
+export default coursesSlice.reducer;
