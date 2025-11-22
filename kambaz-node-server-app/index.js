@@ -14,8 +14,12 @@ const app = express()
 app.use(cors({
 
     credentials:true,
-    origin: process.env.CLIENT_URL || ["http://localhost:3000", 
-    "https://kambaz-node-server-8na5e0c7b-max-zhou-7s-projects.vercel.app/"]
+    // origin: process.env.CLIENT_URL || ["http://localhost:3000", 
+    // "https://kambaz-node-server-8na5e0c7b-max-zhou-7s-projects.vercel.app/"]
+    origin: [
+        'http://localhost:3000',
+        /^https:\/\/kambaz-node-server-.*\.vercel\.app$/  // Allow all your Vercel deployments
+    ]
 
 
 }));
