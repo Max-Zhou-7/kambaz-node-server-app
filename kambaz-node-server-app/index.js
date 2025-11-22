@@ -14,7 +14,8 @@ const app = express()
 app.use(cors({
 
     credentials:true,
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: process.env.CLIENT_URL || ["http://localhost:3000", 
+    "https://kambaz-node-server-8na5e0c7b-max-zhou-7s-projects.vercel.app/"]
 
 
 }));
@@ -26,9 +27,10 @@ const sessionOptions = {
     resave: false,
     saveUninitialized: false,
    cookie: {
-        sameSite: "lax",
-        secure: false,
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        secure: process.env.NODE_ENV === "production",
         httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
     }
 };
 
@@ -41,6 +43,9 @@ const sessionOptions = {
 //     };
 // }
 
+if (process.env.NODE_ENV === "production") {
+    sessionOptions.proxy = true;
+}
 
 app.use(session(sessionOptions));
 
