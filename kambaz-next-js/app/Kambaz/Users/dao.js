@@ -1,40 +1,45 @@
 import { v4 as uuidv4} from "uuid";
+import model from "./model.js";
 
-export default function UserDao(db) {
+export default function UserDao() {
     const createUser = (user) => {
         const newUser = { ...user, _id: uuidv4()};
-        db.users = [...db.users, newUser];
-        return newUser;
+        return model.create(newUser);
     };
 
-    const findAllUsers = () => db.users;
+    const findAllUsers = () => model.find();
     
     const findUserById = (userId) => 
-        db.users.find((user) => user._id === userId);
-    
+        model.findById(userId);
     const findUserByUsername = (username) => 
-        db.users.find((user) => user.username === username);
-    
+        model.findOne({username : username});
+    const findUsersByPartialName = (partialName) => {
+        const regex = new RegExp(partialName, "i");
+        return model.find({
+            $or: [{ firstName: {$regex: regex}}, { lastName: { $regex : regex}}],
+        });
+    };
+
     const findUserByCredentials = (username, password) => 
-        db.users.find((user) => user.username === username && user.password === password);
+        model.findOne({username, password});
+
+    const findUserByRole = (role) => model.find({role: role});
+
+    const updateUser = (userId, user) => 
+       model.updateOne({ _id: userId}, {$set: user});
     
-    const updateUser = (userId, userUpdates) => {
-        db.users = db.users.map((u) => 
-            u._id === userId ? { ...u, ...userUpdates } : u
-        );
-        return db.users.find((u) => u._id === userId);
-    };
-    
-    const deleteUser = (userId) => {
-        db.users = db.users.filter((u) => u._id !== userId);
-    };
+    const deleteUser = (userId) => 
+        model.findByIdAndDelete (userId);
+ 
     
     return {
         createUser, 
         findAllUsers, 
         findUserById, 
         findUserByUsername, 
+        findUsersByPartialName,
         findUserByCredentials,
+        findUserByRole,
         updateUser, 
         deleteUser
     };

@@ -1,4 +1,6 @@
 import express from 'express'
+import mongoose from "mongoose";
+
 import Hello from './Hello.js'
 import Lab5 from '../kambaz-next-js/app/Labs/Lab5/index.js'
 import cors from "cors";
@@ -9,7 +11,12 @@ import ModulesRoutes from '../kambaz-next-js/app/Kambaz/Modules/routes.js'
 import AssignmentsRoutes from '../kambaz-next-js/app/Kambaz/Assignments/routes.js';
 import session from 'express-session';
 import EnrollmentsRoutes from '../kambaz-next-js/app/Kambaz/Enrollments/routes.js';
-const app = express()
+
+
+const CONNECTION_STRING = process.env.DATABASE_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kambaz"
+mongoose.connect(CONNECTION_STRING);
+
+const app = express();
 
 app.use(cors({
 
