@@ -14,13 +14,13 @@ import { RootState } from "../../../store";
 import * as client from "../../client";
 
 export default function Modules() {
-  const { cid } = useParams();
+  const { cid: rawCid } = useParams();
+  const cid = Array.isArray(rawCid) ? rawCid[0] : rawCid;
   const [moduleName, setModuleName] = useState("");
   const { modules } = useSelector((state: RootState) => state.modulesReducer);
   const dispatch = useDispatch();
   const onCreateModuleForCourse = async () => {
     if (!cid) return;
-    const courseId = Array.isArray(cid) ? cid[0] : cid
     const newModule = { name: moduleName, course: cid};
     const createModule = await client.createModuleForCourse(cid, newModule);
     dispatch(setModules([...modules, createModule]));
@@ -32,7 +32,8 @@ export default function Modules() {
   };
 
   const onUpdatModule = async (module: any) => {
-    await client.updateModule(module);
+     if (!cid) return;
+    await client.updateModule(cid, module);
     const newModules = modules.map((m: any) => m._id === module._id ? module : m);
     dispatch(setModules(newModules));
   };

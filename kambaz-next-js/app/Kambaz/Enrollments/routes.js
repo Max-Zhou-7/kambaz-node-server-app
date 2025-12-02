@@ -3,7 +3,7 @@ import EnrollmentsDao  from "./dao.js";
 export default function EnrollmentsRoutes(app, db) {
     const dao = EnrollmentsDao(db);
 
-    const enrollUserInCourse = (req, res) => {
+    const enrollUserInCourse = async (req, res) => {
         const currentUser = req.session["currentUser"];
         if (!currentUser) {
             res.sendStatus(401);
@@ -11,7 +11,8 @@ export default function EnrollmentsRoutes(app, db) {
         }
 
         const { courseId } = req.params;
-        const enrollment = dao.enrollUserInCourse(currentUser._id, courseId);
+        // const enrollment = dao.enrollUserInCourse(currentUser._id, courseId);
+        
         res.json(enrollment);
     };
 
