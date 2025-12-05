@@ -99,6 +99,7 @@ onChange={(e) => {setAssignmentDescription(e.target.value); }}
     <Button variant="secondary" onClick={handleClose}> Cancel </Button>
     <Button variant="danger"
      onClick={() => {
+
       onSave();
       handleClose();
      }} > Save </Button>

@@ -102,7 +102,15 @@ export default function Assignments() {
 
   // Handle update assignment
   const handleUpdateAssignment = async () => {
+      console.log("=== handleUpdateAssignment CALLED ===");
+  console.log("All assignments:", assignments);
     const assignmentToEdit = assignments.find((a: any) => a.editing);
+
+
+      console.log("Assignment with editing=true:", assignmentToEdit);
+
+
+
     if (assignmentToEdit) {
       const updatedAssignmentData = {
         ...assignmentToEdit,
@@ -116,8 +124,10 @@ export default function Assignments() {
         availableUntil:availableUntil,
         editing: false,
       }
-      
-      const updated = await client.updateAssignment(updatedAssignmentData);
+
+    const updated = await client.updateAssignment(updatedAssignmentData);
+
+
       dispatch(updateAssignment({...updated, editing: false}));
       // Reset form
       setAssignmentName("");
