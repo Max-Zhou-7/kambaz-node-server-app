@@ -15,8 +15,7 @@ import EnrollmentsRoutes from './Kambaz/Enrollments/routes.js';
 
 const CONNECTION_STRING = process.env.DATABASE_CONNECTION_STRING 
 ||"mongodb+srv://ziluzhou7_db_user:kambaz@kambaz.dys1nfo.mongodb.net/kambaz?retryWrites=true&w=majority";
-console.log('🔌 Connecting to MongoDB...');
-console.log('📍 FULL CONNECTION STRING:', CONNECTION_STRING);
+
 
 
 await mongoose.connect(CONNECTION_STRING, {
@@ -24,22 +23,7 @@ await mongoose.connect(CONNECTION_STRING, {
     socketTimeoutMS: 60000,
 });
 
-console.log('✅ MongoDB connected successfully');
-console.log('📊 Host:', mongoose.connection.host);
-console.log('🗄️  Database:', mongoose.connection.name);
 
-// Test model immediately after connection
-console.log('🔍 Testing course model...');
-const courseModel = (await import('./Kambaz/Courses/model.js')).default;
-console.log('📦 Model loaded:', courseModel.modelName);
-
-console.log('⏳ Attempting countDocuments...');
-const count = await courseModel.countDocuments();
-console.log('✅ Count succeeded! Documents:', count);
-
-console.log('⏳ Attempting find...');
-const courses = await courseModel.find().limit(1);
-console.log('✅ Find succeeded! Sample:', courses[0] || 'No courses found');
 
 
 
