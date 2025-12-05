@@ -5,12 +5,12 @@ import Hello from './Hello.js'
 // import Lab5 from '../kambaz-next-js/app/Labs/Lab5/index.js'
 import cors from "cors";
 // import db from "../kambaz-next-js/app/Kambaz/Database/index.js";
-import UserRoutes from '../kambaz-next-js/app/Kambaz/Users/routes.js';
-import CourseRoutes from '../kambaz-next-js/app/Kambaz/Courses/routes.js';
-import ModulesRoutes from '../kambaz-next-js/app/Kambaz/Modules/routes.js'
-import AssignmentsRoutes from '../kambaz-next-js/app/Kambaz/Assignments/routes.js';
+import UserRoutes from './Kambaz/Users/routes.js';
+import CourseRoutes from './Kambaz/Courses/routes.js';
+import ModulesRoutes from './Kambaz/Modules/routes.js'
+import AssignmentsRoutes from './Kambaz/Assignments/routes.js';
 import session from 'express-session';
-import EnrollmentsRoutes from '../kambaz-next-js/app/Kambaz/Enrollments/routes.js';
+import EnrollmentsRoutes from './Kambaz/Enrollments/routes.js';
 
 
 const CONNECTION_STRING = process.env.DATABASE_CONNECTION_STRING 
@@ -30,7 +30,7 @@ console.log('🗄️  Database:', mongoose.connection.name);
 
 // Test model immediately after connection
 console.log('🔍 Testing course model...');
-const courseModel = (await import('../kambaz-next-js/app/Kambaz/Courses/model.js')).default;
+const courseModel = (await import('./Kambaz/Courses/model.js')).default;
 console.log('📦 Model loaded:', courseModel.modelName);
 
 console.log('⏳ Attempting countDocuments...');
@@ -90,9 +90,9 @@ app.use(session(sessionOptions));
 
 
 
-
-UserRoutes(app);
 CourseRoutes(app);
+UserRoutes(app);
+
 ModulesRoutes(app);
 AssignmentsRoutes(app);
 EnrollmentsRoutes(app);
