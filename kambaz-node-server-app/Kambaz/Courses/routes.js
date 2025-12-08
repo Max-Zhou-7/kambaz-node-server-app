@@ -1,5 +1,5 @@
-// import enrollments from "../Database/enrollments.js";
-// import * as dao from "./dao.js";
+
+import * as dao from "./dao.js";
 import * as enrollmentsDao from "../Enrollments/dao.js";
 
 

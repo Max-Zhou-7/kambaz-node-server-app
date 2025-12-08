@@ -11,7 +11,9 @@ import ModulesRoutes from './Kambaz/Modules/routes.js'
 import AssignmentsRoutes from './Kambaz/Assignments/routes.js';
 import session from 'express-session';
 import EnrollmentsRoutes from './Kambaz/Enrollments/routes.js';
-
+import QuizzesRoutes from './Kambaz/Quizzes/routes.js';
+import QuestionsRoutes from './Kambaz/Questions/routes.js';
+import QuizAttemptsRoutes from './Kambaz/QuizAttempts/routes.js';
 
 const CONNECTION_STRING = process.env.DATABASE_CONNECTION_STRING 
 ||"mongodb+srv://ziluzhou7_db_user:kambaz@kambaz.dys1nfo.mongodb.net/kambaz?retryWrites=true&w=majority";
@@ -80,10 +82,29 @@ UserRoutes(app);
 ModulesRoutes(app);
 AssignmentsRoutes(app);
 EnrollmentsRoutes(app);
+QuizzesRoutes(app);
+QuestionsRoutes(app);
+QuizAttemptsRoutes(app);
 
 
 // Hello(app)
 // Lab5(app)
+
+
+app.get('/', (req, res) => {
+    res.json({ 
+        message: "Kambaz API Server is running", 
+        status: "healthy",
+        endpoints: {
+            users: "/api/users",
+            courses: "/api/courses",
+            quizzes: "/api/quizzes",
+            assignments: "/api/assignments",
+            questions: "/api/questions"
+        }
+    });
+});
+
 
 app.listen(process.env.PORT || 4000)
 
