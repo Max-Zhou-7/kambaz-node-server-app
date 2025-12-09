@@ -2,7 +2,7 @@ import express from 'express'
 import mongoose from "mongoose";
 
 import Hello from './Hello.js'
-// import Lab5 from '../kambaz-next-js/app/Labs/Lab5/index.js'
+import Lab5 from '../kambaz-next-js/app/Labs/Lab5/index.js'
 import cors from "cors";
 // import db from "../kambaz-next-js/app/Kambaz/Database/index.js";
 import UserRoutes from './Kambaz/Users/routes.js';
@@ -87,8 +87,8 @@ QuestionsRoutes(app);
 QuizAttemptsRoutes(app);
 
 
-// Hello(app)
-// Lab5(app)
+Hello(app)
+Lab5(app)
 
 
 app.get('/', (req, res) => {
