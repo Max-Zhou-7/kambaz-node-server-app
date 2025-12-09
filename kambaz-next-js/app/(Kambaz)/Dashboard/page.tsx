@@ -176,7 +176,7 @@ const fetchEnrollments = async () => {
 
       <div id="wd-dashboard-courses">
         <Row xs={1} md={5} className="row row-cols-1 row-cols-md-5 g-4">
-          {enrolledCourses
+          {courses
           .map((c:Course) => (
             <Col 
             key ={c._id}

@@ -19,6 +19,11 @@ export default function CourseRoutes(app) {
                 return;
             }
             userId = currentUser._id;
+        if (currentUser.role === "FACULTY") {
+            const courses = await dao.findAllCourses();
+            res.json(courses);
+            return;
+        }
         }
         // const courses = await dao.findCoursesForEnrolledUser(userId);
         const courses = await enrollmentsDao.findCoursesForUser(userId);

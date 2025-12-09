@@ -3,8 +3,7 @@ import model from "./model.js";
 
 export default function UserDao() {
     const createUser = (user) => {
-        // const newUser = { ...user, _id: uuidv4()};
-        delete user._id;
+    user._id = Date.now().toString() + Math.random().toString(36).substr(2, 9);
         return model.create(user);
     };
 

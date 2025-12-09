@@ -15,7 +15,7 @@ import enrollmentModel from "../Enrollments/model.js";
 
 
     export const createCourse= (course) => {
-        delete course._id;
+    course._id = Date.now().toString() + Math.random().toString(36).substr(2, 9);
         return model.create(course);
     }
 
