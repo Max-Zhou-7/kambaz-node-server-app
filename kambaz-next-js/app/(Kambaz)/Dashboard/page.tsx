@@ -64,29 +64,46 @@ const fetchEnrollments = async () => {
 
 
 
-  const onAddNewCourse = async () => {
+const onAddNewCourse = async () => {
+  try {
+    console.log("Creating course:", course);
     const newCourse = await client.createCourse(course);
-    dispatch(setCourses([ ...courses, newCourse ]));
-  };
-
-  const onDeleteCourse = async (courseId: string) => {
-    const status = await client.deleteCourse(courseId);
-    dispatch(setCourses(courses.filter((course) => course._id !== courseId)));
+    console.log("Course created:", newCourse);
+    await new Promise(resolve => setTimeout(resolve, 100)); // Wait for DB
+    const updatedCourses = await client.findMyCourses();
+    console.log("Fetched courses:", updatedCourses);
+    dispatch(setCourses(updatedCourses));
+  } catch (error) {
+    console.error("Error adding course:", error);
   }
+};
 
-  const onUpdatCourse = async () => {
+const onDeleteCourse = async (courseId: string) => {
+  try {
+    await client.deleteCourse(courseId); // Wait for the delete operation to finish
+    console.log("Course deleted successfully.");
+    
+
+    const updatedCourses = await client.findMyCourses();
+    dispatch(setCourses(updatedCourses));
+  } catch (error) {
+    console.error("Error deleting course:", error);
+  }
+}
+
+const onUpdatCourse = async () => {
+  try {
+    console.log("Updating course:", course);
     await client.updateCourse(course);
-    dispatch(setCourses(courses.map((c) => {
-      if (c._id === course._id) {
-        return course;
-      }
-      else {
-        return c;
-      }
-    })))
+    console.log("Course updated");
+    await new Promise(resolve => setTimeout(resolve, 100)); // Wait for DB
+    const updatedCourses = await client.findMyCourses();
+    console.log("Fetched courses after update:", updatedCourses);
+    dispatch(setCourses(updatedCourses));
+  } catch (error) {
+    console.error("Error updating course:", error);
   }
-
-
+}
 
   if (!currentUser) {
   return (
@@ -175,42 +192,53 @@ const fetchEnrollments = async () => {
       <hr />
 
       <div id="wd-dashboard-courses">
-        <Row xs={1} md={5} className="row row-cols-1 row-cols-md-5 g-4">
+        <Row xs={1} md={5} className="row row-cols-1 row-cols-md-5 g-4"key={courses.length}>
           {courses
           .map((c:Course) => (
             <Col 
             key ={c._id}
             className="wd-dashboard-course" style={{ width: "300px" }}>
               <Card>
-                <Link href={`/Courses/${c._id}/Home`}
-                      className="wd-dashboard-course-link text-decoration-none text-dark" >
-                  <CardImg src={c.image || "/images/reactjs.jpg"} variant="top" width="100%" height={160} />
-                  <CardBody className="card-body">
-                    <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                      {c.name} </CardTitle>
-                    <CardText className="wd-dashboard-course-description overflow-hidden" style={{ height: "100px" }}>
-                      {c.description} </CardText>
-                    <Button variant="primary"> Go </Button>
-
-                                <button onClick={(event) => {
-                      event.preventDefault();
-                      onDeleteCourse(course._id);
-                    }} className="btn btn-danger float-end"
-                    id="wd-delete-course-click">
-                    Delete
-            </button>
-                                <button id="wd-edit-course-click"
-  onClick={(event) => {
-    event.preventDefault();
-    setCourse(c);
-  }}
-  className="btn btn-warning me-2 float-end" >
-  Edit
-</button>
-
-                  </CardBody>
-                </Link>
-              </Card>
+  <Link href={`/Courses/${c._id}/Home`}
+        className="wd-dashboard-course-link text-decoration-none text-dark">
+    <CardImg src={c.image || "/images/reactjs.jpg"} variant="top" width="100%" height={160} />
+    <CardBody className="card-body">
+      <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
+        {c.name}
+      </CardTitle>
+      <CardText className="wd-dashboard-course-description overflow-hidden" style={{ height: "100px" }}>
+        {c.description}
+      </CardText>
+    </CardBody>
+  </Link>
+  <CardBody className="pt-0">
+    <div className="d-flex justify-content-between">
+      <Link href={`/Courses/${c._id}/Home`}>
+        <Button variant="primary" className="me-2">Go</Button>
+      </Link>
+      <button
+        id="wd-edit-course-click"
+        onClick={e => {
+          e.preventDefault();
+          setCourse(c);
+        }}
+        className="btn btn-warning me-2"
+      >
+        Edit
+      </button>
+      <button
+        onClick={e => {
+          e.preventDefault();
+          onDeleteCourse(c._id);
+        }}
+        className="btn btn-danger"
+        id="wd-delete-course-click"
+      >
+        Delete
+      </button>
+    </div>
+  </CardBody>
+</Card>
             </Col>
           ))}
         </Row>

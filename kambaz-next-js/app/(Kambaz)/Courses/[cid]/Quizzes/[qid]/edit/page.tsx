@@ -246,6 +246,7 @@ export default function QuizEditor() {
                 <option value="EXAMS">Exams</option>
                 <option value="ASSIGNMENTS">Assignments</option>
                 <option value="PROJECT">Project</option>
+                <option value="Test Quiz">Test Quiz</option>
               </Form.Select>
             </Form.Group>
 

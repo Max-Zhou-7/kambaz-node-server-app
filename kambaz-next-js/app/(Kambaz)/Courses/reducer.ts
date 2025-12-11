@@ -24,7 +24,7 @@ const coursesSlice = createSlice({
      );
    },
 
-   setCourses : (state, {payload: course} ) => {
+   setCourses : (state, {payload: courses} ) => {
     state.courses = courses;
    },
 

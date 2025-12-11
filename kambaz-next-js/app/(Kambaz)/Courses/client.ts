@@ -14,7 +14,7 @@ export const fetchAllCourses = async () => {
 };
 
 export const findMyCourses = async () => {
-    const {data} = await axiosWithCredentials.get(`${USERS_API}/current/courses`);
+    const {data} = await axiosWithCredentials.get(`${USERS_API}/current/courses?t=${Date.now()}`);
     return data;
 }
 
@@ -24,12 +24,12 @@ export const createCourse = async (course: any) => {
 };
 
 export const deleteCourse = async (id: string) => {
-    const { data } = await axios.delete(`${COURSES_API}/${id}`);
+    const { data } = await axiosWithCredentials.delete(`${COURSES_API}/${id}`);
     return data;
 }
 
 export const updateCourse = async (course: any) => {
-    const { data } = await axios.put(`${COURSES_API}/${course._id}`, course);
+    const { data } = await axiosWithCredentials.put(`${COURSES_API}/${course._id}`, course);
     return data;
 }
 
